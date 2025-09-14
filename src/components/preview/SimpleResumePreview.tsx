@@ -3,6 +3,7 @@
 import React from 'react';
 import { useAppSelector } from '@/store';
 import { FileText, Download, Mail, Phone, MapPin, ExternalLink } from 'lucide-react';
+import TemplateSlideshowPreview from './TemplateSlideshowPreview';
 
 const SimpleResumePreview: React.FC = () => {
   const { resumeData } = useAppSelector((state) => state.resume);
@@ -77,25 +78,7 @@ const SimpleResumePreview: React.FC = () => {
   };
 
   if (!hasBasicInfo) {
-    return (
-      <div className="h-full flex items-center justify-center bg-gray-100">
-        <div className="text-center max-w-md">
-          <FileText className="w-16 h-16 mx-auto mb-6 text-gray-400" />
-          <h3 className="text-xl font-semibold text-gray-900 mb-3">
-            Start Building Your Resume
-          </h3>
-          <p className="text-gray-600 mb-6">
-            Fill in your personal information to see a live preview of your professional resume.
-            The preview will update in real-time as you add your details.
-          </p>
-          <div className="space-y-2 text-sm text-gray-500">
-            <p>✓ ATS-friendly formatting</p>
-            <p>✓ Professional styling</p>
-            <p>✓ Industry-standard layout</p>
-          </div>
-        </div>
-      </div>
-    );
+    return <TemplateSlideshowPreview />;
   }
 
   return (
