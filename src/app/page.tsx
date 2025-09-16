@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { useAppSelector, useAppDispatch } from '@/store';
 import { setActiveSection } from '@/store/resumeSlice';
 import ResumeBuilder from '@/components/ResumeBuilder';
-import SimpleResumePreview from '@/components/preview/SimpleResumePreview';
 import { FileText, User, Briefcase, GraduationCap, Award, Code, Settings, Download } from 'lucide-react';
 
 const sections = [
@@ -103,21 +102,12 @@ export default function Home() {
         </aside>
 
         {/* Main Content Area */}
-        <main className="flex-1 flex">
+        <main className="flex-1">
           {/* Form Section */}
-          <div className={`bg-white border-r border-gray-200 transition-all duration-300 ${
-            isSidebarCollapsed ? 'w-1/2' : 'w-2/5'
-          }`}>
+          <div className="bg-white h-full">
             <div className="h-full overflow-y-auto p-6">
               <ResumeBuilder />
             </div>
-          </div>
-
-          {/* Preview Section */}
-          <div className={`transition-all duration-300 ${
-            isSidebarCollapsed ? 'w-1/2' : 'w-3/5'
-          }`}>
-            <SimpleResumePreview />
           </div>
         </main>
       </div>
