@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import { useAppSelector, useAppDispatch } from '@/store';
 import { setActiveSection } from '@/store/resumeSlice';
 import ResumeBuilder from '@/components/ResumeBuilder';
-import { FileText, User, Briefcase, GraduationCap, Award, Code, Settings, Download } from 'lucide-react';
+import ResumePreviewModal from '@/components/ResumePreviewModal';
+import { FileText, User, Briefcase, GraduationCap, Award, Code, Settings, Download, Eye } from 'lucide-react';
 
 const sections = [
   { id: 'personal', label: 'Personal Info', icon: User },
@@ -19,12 +20,25 @@ const sections = [
 
 export default function Home() {
   const dispatch = useAppDispatch();
-  const { activeSection } = useAppSelector((state) => state.resume);
+  const { activeSection, resumeData } = useAppSelector((state) => state.resume);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
 
   const handleSectionChange = (sectionId: string) => {
     dispatch(setActiveSection(sectionId));
   };
+
+  const openPreviewModal = () => {
+    setIsPreviewModalOpen(true);
+  };
+
+  const closePreviewModal = () => {
+    setIsPreviewModalOpen(false);
+  };
+
+  const hasBasicInfo = resumeData.personalInfo.fullName && 
+                      resumeData.personalInfo.email && 
+                      resumeData.personalInfo.phone;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -40,9 +54,17 @@ export default function Home() {
           </div>
           
           <div className="flex items-center space-x-4">
-            <button className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-              <Download className="w-4 h-4" />
-              <span>Download PDF</span>
+            <button 
+              onClick={openPreviewModal}
+              className={`flex items-center space-x-2 px-6 py-2 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 ${
+                hasBasicInfo 
+                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 shadow-lg' 
+                  : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+              }`}
+              disabled={!hasBasicInfo}
+            >
+              <Eye className="w-4 h-4" />
+              <span>Generate Resume</span>
             </button>
             <button
               onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
@@ -111,6 +133,12 @@ export default function Home() {
           </div>
         </main>
       </div>
+
+      {/* Resume Preview Modal */}
+      <ResumePreviewModal 
+        isOpen={isPreviewModalOpen} 
+        onClose={closePreviewModal} 
+      />
     </div>
   );
 }
